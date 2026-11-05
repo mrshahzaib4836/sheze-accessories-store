@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheze Accessories Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070c;
+  --primary:#ff3366;
+  --secondary:#00d2ff;
+  --gold:#f5c76b;
+  --text:#ffffff;
+  --muted:#9a9aa8;
+  --glass:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);overflow-x:hidden;
+  background-image:
+    radial-gradient(circle at 50% -10%, #20204a 0%, transparent 55%),
+    radial-gradient(circle at 100% 100%, #2a0f22 0%, transparent 45%);
+}
+
+/* ---------- WebGL-ish animated fog layers ---------- */
+.bg-orbs{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.45;animation:float 18s ease-in-out infinite}
+.orb.a{width:420px;height:420px;background:var(--primary);top:-120px;left:-100px}
+.orb.b{width:380px;height:380px;background:var(--secondary);bottom:-140px;right:-120px;animation-delay:-6s}
+.orb.c{width:300px;height:300px;background:var(--gold);top:40%;left:60%;animation-delay:-12s;opacity:.18}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-40px) scale(1.15)}}
+
+/* ---------- Header ---------- */
+header{
+  position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;
+  padding:16px 22px;background:rgba(7,7,12,.65);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:.5px;
+  background:linear-gradient(90deg,var(--primary),var(--secondary));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.owner-tag{font-size:.62rem;color:var(--muted);text-align:right;line-height:1.4}
+.owner-tag b{color:var(--gold);font-weight:600}
+.cart-pill{display:flex;align-items:center;gap:7px;background:var(--glass);border:1px solid var(--border);
+  padding:8px 14px;border-radius:30px;font-size:.8rem;cursor:pointer;transition:.25s}
+.cart-pill:active{transform:scale(.94)}
+.cart-count{background:linear-gradient(45deg,var(--primary),var(--secondary));color:#fff;border-radius:50%;
+  width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;transition:.3s}
+
+/* ---------- Hero with real 3D parallax ---------- */
+.hero{padding:48px 20px 30px;display:flex;justify-content:center;perspective:1400px}
+.hero-card{
+  position:relative;width:100%;max-width:480px;padding:38px 26px;border-radius:24px;
+  background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.02));
+  border:1px solid var(--border);
+  box-shadow:0 30px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.15);
+  transform-style:preserve-3d;transition:transform .15s ease-out;will-change:transform;
+}
+.hero-card::before{content:"";position:absolute;inset:0;border-radius:24px;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,0%),rgba(255,51,102,.25),transparent 45%);
+  opacity:0;transition:.4s;pointer-events:none}
+.hero-card:hover::before{opacity:1}
+.hero-badge{display:inline-block;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  border:1px solid rgba(245,199,107,.3);padding:5px 12px;border-radius:20px;margin-bottom:18px}
+.hero h1{font-family:'Syne',sans-serif;font-size:2.2rem;line-height:1.1;margin-bottom:12px;font-weight:800;transform:translateZ(40px)}
+.hero h1 span{background:linear-gradient(90deg,var(--primary),var(--secondary));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted);font-size:.88rem;line-height:1.6;margin-bottom:26px;transform:translateZ(25px)}
+.btn-shop{transform:translateZ(50px);padding:14px 34px;border:none;border-radius:32px;
+  background:linear-gradient(90deg,var(--primary),var(--secondary));color:#fff;font-weight:600;font-size:.95rem;
+  cursor:pointer;box-shadow:0 12px 30px rgba(0,210,255,.35),inset 0 1px 0 rgba(255,255,255,.4);transition:.3s}
+.btn-shop:hover{box-shadow:0 16px 40px rgba(255,51,102,.5)}
+.btn-shop:active{transform:translateZ(50px) scale(.95)}
+
+/* ---------- Section titles ---------- */
+.section-title{padding:8px 22px;font-size:1.05rem;font-weight:600;margin-top:22px;display:flex;align-items:center;gap:10px}
+.section-title::before{content:"";width:4px;height:18px;border-radius:4px;background:linear-gradient(var(--primary),var(--secondary))}
+
+/* ---------- Categories ---------- */
+.categories{display:flex;gap:14px;padding:16px 22px 8px;overflow-x:auto;scrollbar-width:none}
+.categories::-webkit-scrollbar{display:none}
+.cat-card{min-width:96px;padding:18px 10px;border-radius:16px;background:var(--glass);
+  border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:9px;
+  font-size:.74rem;color:var(--muted);transition:.28s;cursor:pointer}
+.cat-card:hover,.cat-card:active{background:rgba(255,255,255,.1);transform:translateY(-4px);color:#fff;border-color:rgba(0,210,255,.4)}
+.cat-card span{font-size:1.6rem;filter:drop-shadow(0 0 8px rgba(0,210,255,.4))}
+
+/* ---------- Products ---------- */
+.products{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:18px 22px 100px}
+.product-card{position:relative;background:var(--glass);border:1px solid var(--border);border-radius:18px;
+  padding:14px;transition:.3s;overflow:hidden;transform-style:preserve-3d}
+.product-card:hover{transform:translateY(-6px);border-color:rgba(255,51,102,.35);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.product-img{position:relative;width:100%;height:130px;border-radius:12px;margin-bottom:12px;
+  display:flex;align-items:center;justify-content:center;font-size:3rem;
+  background:radial-gradient(circle at 50% 30%,#1c1c2b,#0d0d15);overflow:hidden}
+.product-img::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.06) 50%,transparent 70%);
+  transform:translateX(-100%);transition:.6s}
+.product-card:hover .product-img::after{transform:translateX(100%)}
+.product-title{font-size:.82rem;font-weight:600;margin-bottom:6px;line-height:1.35}
+.product-price{color:var(--secondary);font-weight:800;font-size:.95rem}
+.old-price{color:var(--muted);text-decoration:line-through;font-size:.7rem;font-weight:400;margin-left:5px}
+.add-btn{position:absolute;bottom:14px;right:14px;background:linear-gradient(45deg,var(--primary),var(--secondary));
+  border:none;border-radius:50%;width:34px;height:34px;color:#fff;font-size:1.3rem;line-height:1;cursor:pointer;
+  box-shadow:0 6px 16px rgba(255,51,102,.4);transition:.25s}
+.add-btn:active{transform:scale(.85)}
+.add-btn.pop{animation:pop .4s ease}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.4)}100%{transform:scale(1)}}
+
+/* ---------- Footer ---------- */
+footer{background:linear-gradient(180deg,transparent,#050508);padding:40px 22px 120px;text-align:center;border-top:1px solid var(--border)}
+footer h3{font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.payment-methods{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.payment-methods span{background:var(--glass);border:1px solid var(--border);padding:7px 13px;border-radius:8px;font-size:.68rem;color:#cfcfd8}
+.foot-note{font-size:.75rem;color:var(--muted);line-height:1.7}
+
+/* ---------- Floating WhatsApp ---------- */
+.support-btn{position:fixed;bottom:22px;right:22px;background:#25D366;color:#fff;text-decoration:none;
+  width:58px;height:58px;border-radius:50%;font-size:1.6rem;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 28px rgba(37,211,102,.45);z-index:999;transition:.3s;animation:pulse 2.4s infinite}
+.support-btn:active{transform:scale(.88)}
+@keyframes pulse{0%,100%{box-shadow:0 10px 28px rgba(37,211,102,.45)}50%{box-shadow:0 10px 40px rgba(37,211,102,.8)}}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(20,20,28,.95);border:1px solid rgba(0,210,255,.4);color:#fff;padding:11px 22px;
+  border-radius:30px;font-size:.8rem;opacity:0;pointer-events:none;transition:.35s;z-index:1000;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(prefers-reduced-motion:reduce){.orb{animation:none}.support-btn{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="bg-orbs">
+  <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
+</div>
+
+<header>
+  <div class="logo">Sheze Store</div>
+  <div class="cart-pill" id="cartPill">🛍 <span class="cart-count" id="cartCount">0</span></div>
+  <div class="owner-tag">Owner<br><b>MrShahzaib</b></div>
+</header>
+
+<section class="hero">
+  <div class="hero-card" id="heroCard">
+    <span class="hero-badge">Cash on Delivery</span>
+    <h1>Premium <span>Accessories</span></h1>
+    <p>Pakistan's most aesthetic phone accessories store. Delivering nationwide with cash on delivery available.</p>
+    <button class="btn-shop" onclick="document.querySelector('.products').scrollIntoView()">Explore Now</button>
+  </div>
+</section>
+
+<h2 class="section-title">Categories</h2>
+<div class="categories">
+  <div class="cat-card"><span>📱</span>Covers</div>
+  <div class="cat-card"><span>🎧</span>Audio</div>
+  <div class="cat-card"><span>🔌</span>Chargers</div>
+  <div class="cat-card"><span>⌚</span>Watches</div>
+  <div class="cat-card"><span>🎮</span>Gaming</div>
+</div>
+
+<h2 class="section-title">Trending Now</h2>
+<div class="products">
+  <div class="product-card">
+    <div class="product-img">📱</div>
+    <div class="product-title">3D Silicone Case</div>
+    <div class="product-price">Rs. 1,500 <span class="old-price">Rs. 2,000</span></div>
+    <button class="add-btn">+</button>
+  </div>
+  <div class="product-card">
+    <div class="product-img">🎧</div>
+    <div class="product-title">Pro Wireless Earbuds</div>
+    <div class="product-price">Rs. 3,200</div>
+    <button class="add-btn">+</button>
+  </div>
+  <div class="product-card">
+    <div class="product-img">🔌</div>
+    <div class="product-title">65W Fast Charger</div>
+    <div class="product-price">Rs. 2,100</div>
+    <button class="add-btn">+</button>
+  </div>
+  <div class="product-card">
+    <div class="product-img">⌚</div>
+    <div class="product-title">Smart Watch Ultra</div>
+    <div class="product-price">Rs. 4,500 <span class="old-price">Rs. 6,000</span></div>
+    <button class="add-btn">+</button>
+  </div>
+</div>
+
+<footer>
+  <h3>Payment Methods</h3>
+  <div class="payment-methods">
+    <span>Cash on Delivery</span><span>Easypaisa</span><span>JazzCash</span>
+    <span>Debit / Credit Card</span><span>Bank Transfer</span>
+  </div>
+  <p class="foot-note">Delivering all over Pakistan<br>&copy; 2026 Sheze Accessories Store. All rights reserved.</p>
+</footer>
+
+<a href="https://wa.me/923073473659" class="support-btn" target="_blank" aria-label="WhatsApp support">💬</a>
+<div class="toast" id="toast">Added to cart</div>
+
+<script>
+/* 3D tilt on hero — works on desktop mouse AND mobile touch */
+const hero = document.getElementById('heroCard');
+function tilt(e){
+  const r = hero.getBoundingClientRect();
+  const x = (e.clientX ?? e.touches[0].clientX) - r.left;
+  const y = (e.clientY ?? e.touches[0].clientY) - r.top;
+  const rx = ((y / r.height) - .5) * -12;
+  const ry = ((x / r.width) - .5) * 12;
+  hero.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+  hero.style.setProperty('--mx', (x/r.width*100)+'%');
+  hero.style.setProperty('--my', (y/r.height*100)+'%');
+}
+hero.addEventListener('mousemove', tilt);
+hero.addEventListener('touchmove', e=>{tilt(e);}, {passive:true});
+hero.addEventListener('mouseleave', ()=>{hero.style.transform='rotateX(0) rotateY(0)'});
+hero.addEventListener('touchend', ()=>{hero.style.transform='rotateX(0) rotateY(0)'});
+
+/* Working cart */
+let count = 0;
+const cartCount = document.getElementById('cartCount');
+const toast = document.getElementById('toast');
+document.querySelectorAll('.add-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    count++; cartCount.textContent = count;
+    btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop');
+    toast.textContent = 'Added to cart · ' + count + ' item' + (count>1?'s':'');
+    toast.classList.add('show');
+    clearTimeout(window._t);
+    window._t = setTimeout(()=>toast.classList.remove('show'), 1600);
+  });
+});
+document.getElementById('cartPill').addEventListener('click', ()=>{
+  toast.textContent = count ? `You have ${count} item(s) in cart` : 'Cart is empty';
+  toast.classList.add('show');
+  clearTimeout(window._t);
+  window._t = setTimeout(()=>toast.classList.remove('show'), 1600);
+});
+</script>
+</body>
+</html>
